@@ -40,7 +40,7 @@ module MonotoneCubicInterpolation
         for i = 1:len
             x = xeval[i]
             if (x < xbp[1]) || (x > xbp[n])
-                throw(string("interpolateCubicHermite: x value ", x ," outside breakpoint range [", xbp[1] ,", " ,xbp[n] + "]"))
+                throw(string("interpolateCubicHermite: x value ", x ," outside breakpoint range [", xbp[1] ,", " ,xbp[n], "]"))
             end
             while (k < n) && (x > xbp[k+1])
                 k+=1
