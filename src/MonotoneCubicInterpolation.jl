@@ -51,45 +51,6 @@ module MonotoneCubicInterpolation
         return f
     end
 
-    function interpolate_derivative_CubicHermite(xeval, xbp, ybp, method, tension)
-        method = lowercase(method)
-        # first we need to determine tangents (m)
-        n = length(xbp)
-        m, delta = calcTangents(xbp, ybp, method, tension)
-
-        c = zeros(n-1)
-        d = zeros(n-1)
-        for k = 1:n-1
-            if method == "linear"
-                m[k] = delta[k]
-                c[k] = 0
-                d[k] = 0
-                continue
-            end
-            xdiff = xbp[k+1] - xbp[k]
-            c[k] = (3*delta[k] - 2*m[k] - m[k+1]) / xdiff
-            d[k] = (m[k] + m[k+1] - 2*delta[k]) / xdiff / xdiff
-        end
-        len = length(xeval)
-        f = zeros(len)
-        fprime = zeros(len)
-        k = 1
-        for i = 1:len
-            x = xeval[i]
-            if (x < xbp[1]) || (x > xbp[n])
-                throw(string("interpolateCubicHermite: x value ", x ," outside breakpoint range [", xbp[1] ,", " ,xbp[n], "]"))
-            end
-            while (k < n) && (x > xbp[k+1])
-                k+=1
-            end
-            xdiff = x - xbp[k]
-            f[i] = ybp[k] + m[k]*xdiff + c[k]*xdiff*xdiff + d[k]*xdiff*xdiff*xdiff
-            fprime[i] = m[k] + 2*c[k]*xdiff + 3* d[k]*xdiff*xdiff
-        end
-        return f, fprime
-    end
-
-    
     function calcTangents(x, y, method, tension)
         n = length(x)
         delta = zeros(n-1)
