@@ -1,5 +1,5 @@
 using MonotoneCubicInterpolation
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+# interpolate a linear function
+include("interpolate_knownfun.jl")
